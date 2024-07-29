@@ -1,1 +1,30 @@
-<p>login works!</p>
+<form [formGroup]="loginForm">
+  <div class="form-div">
+
+    <!-- {{name.errors | json}} -->
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="name?.errors != null && name?.errors!['minlength'] != null">
+        Minimum length is 8
+      </mat-error>
+      <mat-error *ngIf="name?.errors != null && name?.errors!['required']">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Group Name</mat-label>
+      <input matInput formControlName="groupName">
+      <mat-error *ngIf="groupName?.errors != null && groupName?.errors!['minlength'] != undefined">
+        Minimum length is 8
+      </mat-error>
+      <mat-error *ngIf="groupName?.errors != null && groupName?.errors!['required'] ?? false">
+        Group Name is required
+      </mat-error>
+    </mat-form-field>
+    <button mat-flat-button [disabled]="loginForm.invalid">Submit</button>
+  </div>
+
+
+</form>
