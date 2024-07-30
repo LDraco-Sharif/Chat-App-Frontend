@@ -23,8 +23,7 @@
         Group Name is required
       </mat-error>
     </mat-form-field>
-    <button mat-flat-button [disabled]="loginForm.invalid">Submit</button>
+    <button mat-flat-button [disabled]="loginForm.invalid" (click)="goToChat()">Create Group</button>
+    <button mat-flat-button [disabled]="loginForm.invalid" (click)="goToChat()">Enter Group</button>
   </div>
-
-
 </form>

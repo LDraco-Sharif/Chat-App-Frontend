@@ -4,6 +4,8 @@ import { ReactiveFormsModule, FormGroup, FormsModule, Validators, FormBuilder } 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -13,7 +15,7 @@ import { MatButton } from '@angular/material/button';
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButton
+    MatButton,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -21,11 +23,15 @@ import { MatButton } from '@angular/material/button';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router, private auth: AuthService) {
     this.loginForm = fb.group({
       name: ['', [Validators.minLength(8), Validators.required,]],
       groupName: ['', [Validators.required, Validators.minLength(8)]]
     })
+  }
+
+  goToChat() {
+    this.auth.logIn();
   }
 
   get name() {
