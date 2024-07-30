@@ -1,0 +1,6 @@
+<div [ngClass]="isUser ? 'user-container' : ''">
+  <div class="message-box" [ngClass]="isUser ? 'user-message-box': ''">
+    <div class="name">{{isUser? 'You' : name}}</div>
+    <div class="message">{{message}}</div>
+  </div>
+</div>
