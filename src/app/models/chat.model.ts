@@ -1,6 +1,7 @@
 export interface ChatModel {
+  id?: number,
   groupId: number,
-  messegerId: number,
-  messegerName: string,
-  message: string
+  userId: string,
+  userName: string,
+  messageText: string
 }

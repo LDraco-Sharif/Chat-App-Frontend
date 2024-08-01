@@ -6,7 +6,7 @@
       <mat-label>Name</mat-label>
       <input matInput formControlName="name">
       <mat-error *ngIf="name?.errors != null && name?.errors!['minlength'] != null">
-        Minimum length is 8
+        Minimum length is 1
       </mat-error>
       <mat-error *ngIf="name?.errors != null && name?.errors!['required']">
         Name is required
@@ -14,16 +14,30 @@
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'">
+      <mat-error *ngIf="password?.errors != null && password?.errors!['minlength'] != null">
+        Minimum length is 8
+      </mat-error>
+      <mat-error *ngIf="password?.errors != null && password?.errors!['required']">
+        Password is required
+      </mat-error>
+      <button matSuffix mat-icon-button type="button" (click)="isPasswordVisible = !isPasswordVisible">
+        <mat-icon>{{isPasswordVisible ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Group Name</mat-label>
       <input matInput formControlName="groupName">
       <mat-error *ngIf="groupName?.errors != null && groupName?.errors!['minlength'] != undefined">
-        Minimum length is 8
+        Minimum length is 1
       </mat-error>
       <mat-error *ngIf="groupName?.errors != null && groupName?.errors!['required'] ?? false">
         Group Name is required
       </mat-error>
     </mat-form-field>
-    <button mat-flat-button [disabled]="loginForm.invalid" (click)="goToChat()">Create Group</button>
-    <button mat-flat-button [disabled]="loginForm.invalid" (click)="goToChat()">Enter Group</button>
+    <button mat-flat-button [disabled]="loginForm.invalid" (click)="createGroup()">Create Group</button>
+    <button mat-flat-button [disabled]="loginForm.invalid" (click)="enterGroup()">Enter Group</button>
   </div>
 </form>
