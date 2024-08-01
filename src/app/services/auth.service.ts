@@ -1,38 +1,39 @@
-import { Injectable, OnInit } from '@angular/core';
+import { GroupService } from './group.service';
+import { inject, Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { Subject } from 'rxjs';
 
+const loginUserKey = 'user';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
   isLoggedIn: boolean = false;
   constructor(private router: Router, private cookieService: CookieService) {
-    this.isLoggedIn = this.getLoginFromCookies() ? true : false;
+    this.isLoggedIn = this.getUserFromCookies() ? true : false;
   }
 
-  logIn() {
+  logIn(userId: string) {
     this.isLoggedIn = true;
-    this.setLoginFromCookies(this.isLoggedIn);
-    this.router.navigate(['chat']);
+    this.setUserToCookies(userId);
   }
 
   logOut() {
     this.isLoggedIn = false;
-    this.removeLoginFromCookies();
+    this.removeUserFromCookies();
     this.router.navigate(['']);
   }
 
-  getLoginFromCookies() {
-    return this.cookieService.get("is-logged-in");
+  getUserFromCookies() {
+    return this.cookieService.get(loginUserKey);
   }
 
-  setLoginFromCookies(value: boolean) {
-    this.cookieService.set("is-logged-in", String(value));
+  setUserToCookies(value: string) {
+    this.cookieService.set(loginUserKey, value);
   }
 
-  removeLoginFromCookies() {
-    this.cookieService.delete("is-logged-in");
+  removeUserFromCookies() {
+    this.cookieService.delete(loginUserKey);
   }
 }

@@ -33,4 +33,5 @@
 .message {
   padding: 10px;
   padding-bottom: 0px;
+  word-break: break-all;
 }

@@ -1,13 +1,13 @@
 <div class="container">
-  <div>
+  <div #scrollSection [scrollTop]="scrollSection.scrollHeight">
     <div *ngFor="let chat of chats">
-      <app-message-box [name]="chat.messegerName" [message]="chat.message"
-        [isUser]="isMessageFromUser(chat.messegerId)"></app-message-box>
+      <app-message-box [name]="chat.userName" [message]="chat.messageText"
+        [isUser]="isMessageFromUser(chat.userId)"></app-message-box>
     </div>
   </div>
 
-  <mat-form-field class="message-input">
-    <input type="text" matInput placeholder="Message here..." [(ngModel)]="message">
-    <button matSuffix mat-button (click)="addMessage()">Send</button>
+  <mat-form-field class="message-input" subscriptSizing="dynamic">
+    <textarea type="text" matInput placeholder="Message here..." [(ngModel)]="message"></textarea>
+    <button matSuffix mat-button [disabled]="!message" (click)="addMessage()">Send</button>
   </mat-form-field>
 </div>
