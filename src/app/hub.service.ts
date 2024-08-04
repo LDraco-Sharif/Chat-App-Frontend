@@ -2,6 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Type } from '@angular/core';
 import { SignalrClient, SignalrConnection } from 'ngx-signalr-websocket';
+import { CreateMessageModel } from './models/create-message.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,12 @@ export class HubService {
     this.connection.send("AddToGroup", userId, groupId);
   }
 
-  sendGroupMessage(userId: string, groupId: number, message: string) {
-    this.connection.send("GroupMessage", userId, groupId, message);
+  sendGroupMessage(userId: string, groupId: number, messageText: string) {
+    let model: CreateMessageModel = {
+      userId: userId,
+      groupId: groupId,
+      messageText: messageText
+    }
+    this.connection.send("GroupMessage", model);
   }
 }

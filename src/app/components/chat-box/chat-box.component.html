@@ -1,10 +1,11 @@
 <div class="container">
   <div #scrollSection [scrollTop]="scrollSection.scrollHeight">
-    <button *ngIf="loadMessage">Load More...</button>
+
     <div *ngFor="let chat of chats">
       <app-message-box [name]="chat.userName" [message]="chat.messageText"
         [isUser]="isMessageFromUser(chat.userId)"></app-message-box>
     </div>
+    <button mat-button mat-stroked-button *ngIf="loadMoreMessage" (click)="loadMoreFromBack()">Load More...</button>
   </div>
 
   <mat-form-field class="message-input" subscriptSizing="dynamic">

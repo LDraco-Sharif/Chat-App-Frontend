@@ -21,7 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ChatBoxComponent implements OnInit, OnDestroy {
 
-  groupId: number = 2;
+  groupId: number = -1;
   userId: string = '2';
   groupName: string = "";
   message: string = '';
@@ -29,31 +29,30 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
   chats: ChatModel[] = [
   ];
 
-  loadMessage: boolean = false;
+  loadMoreMessage: boolean = false;
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private groupService: GroupService, private messageService: MessageService, private toastrService: ToastrService, private hubService: HubService) {
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.groupId = parseInt(this.route.snapshot.paramMap.get('groupId') ?? '0');
     this.groupName = this.route.snapshot.paramMap.get('groupName') ?? "";
     this.userId = this.authService.getUserFromCookies();
     this.groupService.setGroupName(this.groupName);
-    this.messageService.getMessages(this.userId, this.groupId, null).subscribe((response) => {
+    this.messageService.getMessages(this.userId, this.groupId, null, 10).subscribe((response) => {
       this.chats = response as ChatModel[];
+      if ((response as ChatModel[]).length < 10) {
+        this.loadMoreMessage = false;
+      } else {
+        this.loadMoreMessage = true;
+      }
+
       this.hubService.startConnection(() => {
         this.hubService.getAddedToGroup(this.userId, this.groupId);
-        this.hubService.getMessage$<[string, string]>('GroupMessage').subscribe(([user, message]) => {
-          let newMessage: ChatModel = {
-            groupId: 1,
-            userId: user,
-            userName: user,
-            messageText: message
-          };
-          this.chats = [newMessage as ChatModel, ...this.chats];
+        this.hubService.getMessage$<[ChatModel]>('GroupMessage').subscribe(([chat]) => {
+          this.chats = [chat, ...this.chats];
         });
       });
-
 
       this.hubService.getMessage$<[string]>('StartMessage').subscribe(([message]) => {
         this.toastrService.success(message);
@@ -72,6 +71,19 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
 
   isMessageFromUser(messegerId: string) {
     return this.userId == messegerId;
+  }
+
+  loadMoreFromBack() {
+    let messageId = this.chats[this.chats.length - 1].id;
+    this.messageService.getMessages(this.userId, this.groupId, messageId, 10).subscribe((messages) => {
+      let newMessages = messages as ChatModel[];
+      this.chats = [...this.chats, ...newMessages];
+      if (newMessages.length < 10) {
+        this.loadMoreMessage = false;
+      } else {
+        this.loadMoreMessage = true;
+      }
+    });
   }
 
   // addMessage() {
