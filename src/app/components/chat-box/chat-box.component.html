@@ -1,5 +1,6 @@
 <div class="container">
   <div #scrollSection [scrollTop]="scrollSection.scrollHeight">
+    <button *ngIf="loadMessage">Load More...</button>
     <div *ngFor="let chat of chats">
       <app-message-box [name]="chat.userName" [message]="chat.messageText"
         [isUser]="isMessageFromUser(chat.userId)"></app-message-box>
@@ -8,6 +9,6 @@
 
   <mat-form-field class="message-input" subscriptSizing="dynamic">
     <textarea type="text" matInput placeholder="Message here..." [(ngModel)]="message"></textarea>
-    <button matSuffix mat-button [disabled]="!message" (click)="addMessage()">Send</button>
+    <button matSuffix mat-button [disabled]="!message" (click)="sendMessage()">Send</button>
   </mat-form-field>
 </div>

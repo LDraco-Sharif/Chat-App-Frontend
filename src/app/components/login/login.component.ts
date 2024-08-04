@@ -45,8 +45,7 @@ export class LoginComponent {
         this.onSuccessfulAuth(response);
       },
       error: (errorObj) => {
-        console.log(errorObj.error.message);
-        this.toastrService.error(errorObj.error.message);
+        this.onFail(errorObj);
       }
     })
   }
@@ -57,8 +56,7 @@ export class LoginComponent {
         this.onSuccessfulAuth(response);
       },
       error: (errorObj) => {
-        console.log(errorObj.error.message);
-        this.toastrService.error(errorObj.error.message);
+        this.onFail(errorObj);
       }
     })
   }
@@ -66,6 +64,15 @@ export class LoginComponent {
   onSuccessfulAuth(response: any) {
     this.auth.logIn(response.userId);
     this.router.navigate(['chat', { groupName: response.groupName, groupId: response.groupId, userName: response.userName }]);
+  }
+
+  onFail(errorObj: any) {
+    if (errorObj.error.message) {
+      this.toastrService.error(errorObj.error.message);
+    }
+    else {
+      this.toastrService.error("Server Error");
+    }
   }
 
   get name() {
