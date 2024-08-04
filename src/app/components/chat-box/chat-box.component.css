@@ -10,10 +10,10 @@
 .container>div {
   width: 70%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 10px;
   overflow: overlay;
-  height: 80vh;
+  min-height: 80vh;
 }
 
 .message-input {
